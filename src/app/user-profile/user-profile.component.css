@@ -1,0 +1,15 @@
+.container {
+  margin-top: 100px;
+}
+.radio-inline {
+  margin-left: 10px;
+}
+.btn-outline-success {
+  cursor: pointer;
+}
+.col-sm-12 {
+  margin-top: 25px;
+}
+#closeModal {
+  display: none;
+}

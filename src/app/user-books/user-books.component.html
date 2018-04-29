@@ -1,0 +1,54 @@
+<div class="container">
+  <h2>My books</h2>
+  <div class="row">
+    <div class="col-sm-9" *ngIf="myBooks?.length == 0">
+      You don't have books yet, please <a routerLink="/addBook">add a book</a>
+    </div>
+    <div class="col-sm-10" *ngFor="let book of myBooks">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+            <div class="col-sm-2">
+              <a routerLink="/books/{{book.id}}">
+                <img src="/api/public/books/{{book.id}}/img">
+              </a>
+            </div>
+            <div class="col-sm-8">
+              <h4>{{book.name}}</h4>
+              <span *ngFor="let author of (book.authors | array)">{{author.name}}</span>
+            </div>
+            <div class="col-sm-2">
+              <a class="btn btn-danger" data-toggle="modal"
+                 data-target="#myModal" (click)="setBookForRemove(book.id)">
+                Remove book
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h5>Are you sure?
+          <small>This action will remove all trade requests and trade history for this book
+          </small>
+        </h5>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="removeBook(this?.removeBookId)">
+            YES
+          </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

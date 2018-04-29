@@ -1,0 +1,69 @@
+<div class="container">
+  <h3>
+    Add a book
+  </h3>
+  <form *ngIf="book == null">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label>Book name</label>
+          <input type="text" class="form-control" #name >
+        </div>
+        <div class="form-group">
+          <label>Authors</label>
+          <div class="input-group">
+            <input type="text" class="form-control" #searchBox (keyup)="search(searchBox.value)">
+            <div class="input-group-btn">
+              <button class="btn btn-default" (click)="addAuthor(searchBox.value); searchBox.value = ''">Add</button>
+            </div>
+          </div>
+          <div>
+            <div *ngFor="let author of authors| async"
+                 class="search-result" (click)="searchBox.value = author.name; searchAuthor()">
+              {{author.name}}
+            </div>
+          </div>
+          <div class="authors" *ngFor="let author of this.bookAuthors">{{author}} <i class="fa fa-remove"
+                                                                                     (click)="removeBookAuthor(author)"></i>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea class="form-control" rows="4" #description></textarea>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <button type="submit" class="btn btn-primary pull-right"
+                    (click)="addBook(this.user, name.value, description.value)">Add
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="error" *ngIf="errorMsg != ''">
+          {{errorMsg}}
+        </div>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="book != null">
+    <div>
+      <h5>You have added book with name : {{book.name}}</h5>
+      <h6 *ngIf="!imageUploaded">Choose image for this book</h6>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <image-upload [url]="'/api/books/'+ book.id + '/images/upload'" [max]="1" [buttonCaption]="'Select Image!'"
+                      (onFileUploadFinish)="imageAdded()">
+        </image-upload>
+        <a routerLink="/books" *ngIf="!imageUploaded" class="btn btn-danger">No thanks</a>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="imageUploaded">
+    <div class="col-sm-12">
+      <a routerLink="/books" class="btn btn-success">OK</a>
+      <a (click)="reload()" class="btn btn-success">Add other book</a>
+    </div>
+  </div>
+</div>

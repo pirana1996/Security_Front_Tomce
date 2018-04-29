@@ -1,0 +1,82 @@
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded fixed-top">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="/">
+    <img src="../../assets/images/book-club-logo-theme.png">
+  </a>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav navbar-inverse">
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/books">All books</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" *ngIf="authenticated">
+        <a class="nav-link" routerLink="/myBooks">My books</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/addBook">Add book</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav navbar-toggler-right">
+      <a class="btn btn-outline-secondary btn-sm" routerLink="/login" *ngIf="!this.authenticated">Sign in</a>
+      <a class="btn btn-outline-secondary btn-sm" routerLink="/signUp" *ngIf="!this.authenticated">Sign up</a>
+      <i class="fa fa-book" data-toggle="dropdown" *ngIf="authenticated"></i>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" *ngFor="let tradeRequest of tradeRequestForUser" data-toggle="modal"
+           data-target="#requestDetailsModal" (click)="setTradeRequestForReview(tradeRequest)">trade request from <span>{{tradeRequest.givenBook.user.name}}</span></a>
+        <a class="dropdown-item" *ngIf="this.tradeRequestForUser?.length == 0">There are no request</a>
+      </div>
+      <span class="notification" *ngIf="authenticated && this.tradeRequestForUser?.length > 0">{{this.tradeRequestForUser?.length}}</span>
+      <div class="dropdown" *ngIf="authenticated">
+        <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+          welcome {{username}}
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" routerLink="/profile">Profile</a>
+          <a class="dropdown-item" (click)="logout()">Sign out</a>
+        </div>
+      </div>
+    </ul>
+  </div>
+</nav>
+
+
+<div id="requestDetailsModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Request details</h3>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h5>
+          <small>Your book:</small>
+          {{this.tradeRequestForReview?.takenBook.name}}
+        </h5>
+        <h5>
+          <small>Trade with:</small>
+          {{this.tradeRequestForReview?.givenBook.name}}
+        </h5>
+        <h6>
+          <small>From :</small>
+          {{this.tradeRequestForReview?.givenBook.user.name}}
+        </h6>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" (click)="acceptRequest()" data-dismiss="modal">
+          Accept
+          <i class="fa fa-check"></i>
+        </button>
+        <button class="btn btn-danger" (click)="rejectRequest()" data-dismiss="modal">
+          Reject
+          <i class="fa fa-remove"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

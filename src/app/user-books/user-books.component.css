@@ -1,0 +1,31 @@
+.container {
+  margin-top: 100px;
+}
+.card {
+  margin-bottom: 10px;
+}
+
+a:not([href]) {
+  color:white;
+}
+
+a:not([href]):hover {
+  cursor: pointer;
+  color: maroon;
+}
+img {
+  height: 100px;
+}
+
+.btn-danger {
+  margin-top: 60px;
+}
+
+span {
+  color: #8eaeff;
+}
+
+.col-sm-9 {
+  margin-top: 40px;
+  font-size: 20px;
+}

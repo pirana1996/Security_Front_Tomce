@@ -1,0 +1,115 @@
+<div class="row">
+  <div class="col-sm-3 fixed-top" *ngIf="isLoggedIn">
+    <div class="container">
+      <div class="card-primary">
+        <h5>My requests</h5>
+        <div class="row">
+          <div class="col-sm-12">
+            <ul class="requests">
+              <li *ngFor="let tradeRequest of mySentTradeRequests">
+                <small>{{tradeRequest.givenBook?.name}}
+                  <i class="fa fa-long-arrow-right"></i>
+                  {{tradeRequest.takenBook?.name}}
+                  <i class="fa fa-remove pull-right" (click)="cancelRequest(tradeRequest)"></i>
+                  <div class="dropdown-divider"></div>
+                </small>
+              </li>
+            </ul>
+            <div *ngIf="mySentTradeRequests?.length == 0">You have no requests</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div [ngClass]="{'col-sm-9': isLoggedIn, 'col-sm-12' : !isLoggedIn}">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8">
+          <h3>All books
+            <small>
+              <a (click)="getBooks('name')">name</a>
+              |
+              <a (click)="getBooks('id')">date</a>
+            </small>
+          </h3>
+        </div>
+        <div class="col-sm-4">
+          <div class="search">
+            <form (submit)="search(searchKey)">
+              <input type="text" [(ngModel)]="searchKey" class="form-control input-sm" maxlength="64"
+                     placeholder="Search" [ngModelOptions]="{standalone: true}">
+              <button type="submit" class="btn btn-primary btn-sm">
+                Search
+                <i class="fa fa-search"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-2" *ngFor="let book of books | paginate: { itemsPerPage: 10, currentPage: page }">
+          <div class="row">
+            <div class="col-sm-12 img-col">
+              <a routerLink="/books/{{book.id}}">
+                <img class="img-fluid" src="/api/public/books/{{book.id}}/img">
+              </a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 bookTitle">
+              <div>
+                <strong>{{book.name | title}}</strong>
+                <div>
+                  <small *ngFor="let author of (book.authors | array)">{{author.name}}</small>
+                </div>
+              </div>
+              <button class="btn-block enabled" *ngIf="isLoggedIn && !isInMySentTradeRequest(book.id)"
+                      data-toggle="modal" data-target="#myModal"
+                      (click)="setBookForTrade(book)">TRADE BOOK
+              </button>
+              <button disabled class="btn-block disabled" *ngIf="isInMySentTradeRequest(book.id) && isLoggedIn">TRADE
+                BOOK
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <pagination-controls class="mx-auto" (pageChange)="page = $event"></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h5>Choose a book you want to trade with</h5>
+
+        <div class="form-group" *ngIf="this.myBook == true">
+
+          <select class="form-control" [(ngModel)]="targetBookId">
+            <option *ngFor="let book of otherBooks" value="{{book.id}}">{{book.name}}</option>
+          </select>
+        </div>
+
+        <div class="form-group" *ngIf="this.myBook == false">
+          <select class="form-control" [(ngModel)]="targetBookId">
+            <option *ngFor="let book of myBooks" value="{{book.id}}" [disabled]="isInMySentTradeRequest(book.id)">
+              {{book.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="sendTradeRequest()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

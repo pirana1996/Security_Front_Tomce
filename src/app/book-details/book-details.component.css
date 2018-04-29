@@ -1,0 +1,30 @@
+.container {
+  margin-top: 100px;
+}
+.container .row {
+  margin-top: 30px;
+}
+
+.col-sm-9 div{
+  padding-top: 10px;
+}
+
+h6 {
+  margin-left: 90px;
+}
+
+h6:nth-child(2) {
+  margin-left: 13px;
+}
+
+h5 {
+  display: inline;
+}
+h6:nth-child(2) {
+  display: inline;
+}
+
+img {
+  height: 350px;
+  width: 100%;
+}

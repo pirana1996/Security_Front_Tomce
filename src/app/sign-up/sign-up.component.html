@@ -1,0 +1,31 @@
+<div class="container">
+  <h3>Sign up</h3>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-6">
+          <input id="name" #name type="text" class="form-control" placeholder="Name">
+        </div>
+        <div class="col-sm-6">
+          <input id="lastName" #lastName type="text" class="form-control" placeholder="Last name">
+        </div>
+      </div>
+      <input id="email" #email type="email" class="form-control" placeholder="Email">
+      <input id="city" #city type="text" class="form-control" placeholder="City">
+      <input id="username" #username type="text" class="form-control" aria-invalid="true" placeholder="Username">
+      <input id="password" #password type="password" class="form-control" placeholder="Password">
+      <input id="confirmPassword" #confirmPassword type="password" class="form-control" placeholder="Confirm password">
+        <div class="form-group">
+        <label class="radio-inline"><input type="radio" name="gender" (change)="setGender('m')">Male</label>
+        <label class="radio-inline"><input type="radio" name="gender" (change)="setGender('f')">Female</label>
+      </div>
+      <button class="btn btn-success btn-block"
+              (click)="signUp(name.value, lastName.value, email.value, username.value, password.value, confirmPassword.value, this.gender, city.value)">
+        Sign up
+      </button>
+      <div class="error text-center" *ngIf="this.errorMsg != ''">
+        {{this.errorMsg}}
+      </div>
+    </div>
+  </div>
+</div>
